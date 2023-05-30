@@ -7,10 +7,12 @@ import Results from "./Results";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
+  const [pageNumber, setPageNumber] = useState(1);
   const [requestParams, setRequestParams] = useState({
     location: "",
     animal: "",
     breed: "",
+    pageNumber: 0,
   });
   const [animal, setAnimal] = useState("");
   const [breeds] = useBreedList(animal);
@@ -18,6 +20,17 @@ const SearchParams = () => {
 
   const results = useQuery(["search", requestParams], fetchSearch);
   const pets = results?.data?.pets ?? [];
+  const count = results?.data?.numberOfResults ?? 0;
+
+  const paginate = (pageNumber) => {
+    setPageNumber(pageNumber);
+    setRequestParams((state) => {
+      return {
+        ...state,
+        pageNumber: pageNumber - 1,
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,6 +39,7 @@ const SearchParams = () => {
       animal: formData.get("animal") ?? "",
       breed: formData.get("breed") ?? "",
       location: formData.get("location") ?? "",
+      pageNumber: 0,
     };
     setRequestParams(obj);
   };
@@ -72,7 +86,12 @@ const SearchParams = () => {
         <button>Submit</button>
       </form>
 
-      <Results pets={pets} />
+      <Results
+        pets={pets}
+        count={count}
+        paginate={paginate}
+        currentPage={pageNumber}
+      />
     </div>
   );
 };

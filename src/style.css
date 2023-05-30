@@ -364,3 +364,22 @@ form .pet {
 .mini .loader {
   font-size: 34px;
 }
+
+.pagination-container ul {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination-container ul li {
+  list-style: none;
+  cursor: pointer;
+  margin: 1px 3px;
+  padding: 8px 10px;
+  font-size: 18px;
+  border: 1px solid black;
+}
+
+.pagination-container ul li.active {
+  font-weight: 700;
+  font-size: 22px;
+}
